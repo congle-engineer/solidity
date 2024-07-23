@@ -1,16 +1,57 @@
 const { assert } = require('chai');
 
-describe('Contract', function () {
+describe("Test Tip contract", () => {
+  const charity = ethers.Wallet.createRandom().address;
+  const donation = ethers.utils.parseEther("1");
+
   let contract;
+  let owner;
+  let tipper;
+
   before(async () => {
-    const Contract = await ethers.getContractFactory("Contract");
-    contract = await Contract.deploy();
+    const Contract = await ethers.getContractFactory("Tip");
+    contract = await Contract.deploy(charity);
     await contract.deployed();
+
+    owner = ethers.provider.getSigner(0);
+    await owner.sendTransaction({ to: contract.address, value: donation });
+    tipper = ethers.provider.getSigner(1);
   });
 
-  it('should store the owner', async () => {
+  it('Should store the owner', async () => {
     const _owner = await contract.owner.call();
-    const [owner] = await ethers.provider.listAccounts();
-    assert.equal(_owner, owner);
+    assert.equal(_owner, await owner.getAddress());
+  });
+
+  it('Should receive the initial donation', async () => {
+    const balance = await ethers.provider.getBalance(contract.address);
+    assert(balance.eq(donation), "expected the ether to be received");
+  });
+
+  describe('After two .25 ether tips', () => {
+    const tip = ethers.utils.parseEther("0.25");
+    let balanceBefore;
+
+    before(async () => {
+      balanceBefore = await ethers.provider.getBalance(await owner.getAddress());
+      await contract.connect(tipper).tip({ value: tip });
+      await contract.connect(tipper).tip({ value: tip });
+    });
+
+    it('Should add .5 ether to the owners balance', async () => {
+      const balanceAfter = await ethers.provider.getBalance(await owner.getAddress());
+      assert.equal(balanceAfter.sub(balanceBefore).toString(), tip.mul(2).toString());
+    });
+  });
+
+  describe('After donating', () => {
+    before(async () => {
+      await contract.connect(tipper).donate();
+    });
+
+    it('Should add the donations to the charity balance', async () => {
+      const _donation = await ethers.provider.getBalance(charity);
+      assert.equal(_donation.toString(), donation.toString());
+    });
   });
 });
