@@ -15,6 +15,8 @@
     "hardhat": "^2.22.3"
   },
   "dependencies": {
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.11",
+    "chai": "4.2.0",
     "dotenv": "^16.4.5",
     "ethers": "^5.7.2"
   }

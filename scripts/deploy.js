@@ -1,26 +1,13 @@
-const ethers = require('ethers');
-require('dotenv').config();
-
 async function main() {
-  const url = process.env.API_URL;
-  
-  let artifacts = await hre.artifacts.readArtifact("Faucet");
-  const provider = new ethers.providers.JsonRpcProvider(url);
-  
-  let privateKey = process.env.PRIVATE_KEY;
-  let wallet = new ethers.Wallet(privateKey, provider);
+  const HelloWorld = await ethers.getContractFactory("HelloWorld");
 
-  let factory = new ethers.ContractFactory(artifacts.abi, artifacts.bytecode, wallet);
-
-  let faucet = await factory.deploy();
-
-  console.log("Faucet address: ", faucet.address);
-  await faucet.deployed();
+  const hello_world = await HelloWorld.deploy("This is a test message!");
+  console.log("Contract deployed to address: ", hello_world.address);
 }
 
 main()
   .then(() => process.exit(0))
   .catch(error => {
-    console.log("error: ", error);
+    console.log(error);
     process.exit(1);
   });
