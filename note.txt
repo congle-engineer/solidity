@@ -1,0 +1,60 @@
+Pragma statements
+
+Import statements
+
+Events
+
+Errors
+
+Interfaces
+
+Libraries
+
+Contracts
+
+--------
+
+Type declarations
+
+State variables
+
+Events
+
+Errors
+
+Modifiers
+
+Functions
+
+--------
+
+constructor
+
+receive function (if exists)
+
+fallback function (if exists)
+
+external
+
+public
+
+internal
+
+private
+
+Within a grouping, place the view and pure functions last.
+
+--------
+
+The modifier order for a function should be:
+
+Visibility
+
+Mutability
+
+Virtual
+
+Override
+
+Custom modifiers
+

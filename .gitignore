@@ -1,5 +1,7 @@
 artifacts/*
 cache/*
 node_modules/*
+coverage/*
 package-lock.json
+coverage.json
 .env

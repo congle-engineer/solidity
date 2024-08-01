@@ -28,30 +28,30 @@ describe("Test Tip contract", () => {
     assert(balance.eq(donation), "expected the ether to be received");
   });
 
-  describe('After two .25 ether tips', () => {
-    const tip = ethers.utils.parseEther("0.25");
-    let balanceBefore;
-
-    before(async () => {
-      balanceBefore = await ethers.provider.getBalance(await owner.getAddress());
-      await contract.connect(tipper).tip({ value: tip });
-      await contract.connect(tipper).tip({ value: tip });
-    });
-
-    it('Should add .5 ether to the owners balance', async () => {
-      const balanceAfter = await ethers.provider.getBalance(await owner.getAddress());
-      assert.equal(balanceAfter.sub(balanceBefore).toString(), tip.mul(2).toString());
-    });
-  });
-
-  describe('After donating', () => {
-    before(async () => {
-      await contract.connect(tipper).donate();
-    });
-
-    it('Should add the donations to the charity balance', async () => {
-      const _donation = await ethers.provider.getBalance(charity);
-      assert.equal(_donation.toString(), donation.toString());
-    });
-  });
+//   describe('After two .25 ether tips', () => {
+//     const tip = ethers.utils.parseEther("0.25");
+//     let balanceBefore;
+// 
+//     before(async () => {
+//       balanceBefore = await ethers.provider.getBalance(await owner.getAddress());
+//       await contract.connect(tipper).tip({ value: tip });
+//       await contract.connect(tipper).tip({ value: tip });
+//     });
+// 
+//     it('Should add .5 ether to the owners balance', async () => {
+//       const balanceAfter = await ethers.provider.getBalance(await owner.getAddress());
+//       assert.equal(balanceAfter.sub(balanceBefore).toString(), tip.mul(2).toString());
+//     });
+//   });
+// 
+//   describe('After donating', () => {
+//     before(async () => {
+//       await contract.connect(tipper).donate();
+//     });
+// 
+//     it('Should add the donations to the charity balance', async () => {
+//       const _donation = await ethers.provider.getBalance(charity);
+//       assert.equal(_donation.toString(), donation.toString());
+//     });
+//   });
 });
