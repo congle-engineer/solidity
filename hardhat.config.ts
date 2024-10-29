@@ -9,7 +9,7 @@ const config: HardhatUserConfig = {
   },
   networks: {
     sepolia: {
-      url: process.env.API_URL,
+      url: `https://eth-sepolia.g.alchemy.com/v2/${process.env.API_KEY}`,
     },
   },
 };
